@@ -1,0 +1,18 @@
+/* Footer.css */
+
+.footer {
+  background-color: #0f172a;
+  color: white;
+  text-align: center;
+  padding: 15px 0;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  font-size: 16px;
+  font-family: Arial, Helvetica, sans-serif;
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.footer span {
+  letter-spacing: 0.5px;
+}
