@@ -8,6 +8,9 @@ import Footer from './components/Footer'
 import {BrowserRouter, Routes, Route} from 'react-router-dom';
 import EmployeeComponent from './components/EmployeeComponent'
 
+import Register from './pages/Register'
+import Login from './pages/Login'
+
 function App() {
   const [count, setCount] = useState(0)
 
@@ -16,6 +19,13 @@ function App() {
     <BrowserRouter>
       <Header/>
       <Routes>
+
+        <Route path="/" element={<Register />} />
+
+        <Route path="/login" element={<Login />} />
+
+        {/* <Route path="/dashboard" element={<Dashboard />} /> */}
+
         <Route path='/' element={ <ListEmployeeComponent/>}>
         </Route>
         <Route path="/employees" element={<ListEmployeeComponent/>}></Route>

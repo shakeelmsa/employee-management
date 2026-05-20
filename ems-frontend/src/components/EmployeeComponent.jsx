@@ -8,16 +8,7 @@ const EmployeeComponent = () => {
   const [lastName,setLastName]=useState('')
   const [email,setEmail]=useState('')
 
-  // const handleFirstName = (e) =>{
-  //   setFirstName(e.target.value);
-  // }
-
-  // const handleLastName = (e) =>{
-  //   setLastName(e.target.value);
-  // }
-  // const handleEmail=(e)=>{
-  //   setEmail(e.target.value);
-  // }
+ 
 
   const {id}=useParams();
 

@@ -1,6 +1,8 @@
 package com.springBootReact.service;
 
 import com.springBootReact.dto.EmployeeDto;
+import com.springBootReact.dto.LoginDto;
+import com.springBootReact.dto.RegisterDto;
 import com.springBootReact.entity.Employee;
 import com.springBootReact.exception.ResourceNotFoundException;
 import com.springBootReact.mapper.EmployeeMapper;
@@ -16,11 +18,69 @@ import java.util.stream.Collectors;
 public class EmployeeServiceImpl implements  EmployeeService{
 
     private EmployeeRepository employeeRepository;
+
+    @Override
+    public String register(RegisterDto register) {
+
+        // Check Email Exists
+
+        if(employeeRepository
+                .findByEmail(register.getEmail())
+                .isPresent()) {
+
+            throw new RuntimeException(
+                    "Email already exists");
+        }
+
+        Employee employee =
+                EmployeeMapper.mapToEmployee(register);
+
+        Employee savedEmployee =
+                employeeRepository.save(employee);
+
+        return "Registration Successful";
+    }
+
+    // LOGIN
+
+    @Override
+    public String login(LoginDto loginDto) {
+
+        Employee employee =
+                employeeRepository
+                        .findByEmail(loginDto.getEmail())
+                        .orElseThrow(() ->
+                                new RuntimeException("Email not found"));
+
+        if(!employee.getPassword()
+                .equals(loginDto.getPassword())) {
+
+            throw new RuntimeException(
+                    "Invalid Password");
+        }
+
+        return "Login Successful";
+    }
     @Override
     public EmployeeDto createEmployee(EmployeeDto employeeDto) {
-        Employee employee= EmployeeMapper.mapToEmployee(employeeDto);
-        Employee savedEmployee=employeeRepository.save(employee);
-        return EmployeeMapper.mapToEmployeeDto(savedEmployee);
+
+        // Check Email Already Exists
+
+        if(employeeRepository
+                .findByEmail(employeeDto.getEmail())
+                .isPresent()){
+
+            throw new RuntimeException("Email already exists");
+        }
+
+        Employee employee =
+                EmployeeMapper.mapToEmployee(employeeDto);
+
+        Employee savedEmployee =
+                employeeRepository.save(employee);
+
+        return EmployeeMapper
+                .mapToEmployeeDto(savedEmployee);
     }
 
     @Override
