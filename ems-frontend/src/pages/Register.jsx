@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
+import axios from 'axios'
+import { registerUser } from '../services/authService'
 import './Register.css'
 
 const Register = () => {
@@ -7,7 +9,8 @@ const Register = () => {
   const navigate = useNavigate()
 
   const [employee, setEmployee] = useState({
-    name: '',
+   firstName: '',
+    lastName: '',
     email: '',
     phoneNumber: '',
     password: ''
@@ -21,18 +24,31 @@ const Register = () => {
     })
   }
 
-  const handleSubmit = (e) => {
 
-    e.preventDefault()
+  const handleSubmit = async (e) => {
 
-    console.log(employee)
+  e.preventDefault()
 
-    // API Call Here
+  try {
+
+    const response = await registerUser(employee)
+
+    console.log(response.data)
 
     alert("Registration Successful")
 
     navigate('/login')
+
+  } catch (error) {
+
+    if(error.response.status === 409){
+
+      alert("Email already exists")
+   }
+
+    alert("Registration Failed")
   }
+}
 
   return (
 
@@ -49,14 +65,23 @@ const Register = () => {
           onSubmit={handleSubmit}
         >
 
-          <input
-            type="text"
-            name="name"
-            placeholder="Enter Name"
-            className="register-input"
-            value={employee.name}
-            onChange={handleChange}
-          />
+       <input
+       type="text"
+       name="firstName"
+       placeholder="Enter First Name"
+       className="register-input"
+       value={employee.firstName}
+       onChange={handleChange}
+       />
+
+       <input
+       type="text"
+       name="lastName"
+       placeholder="Enter Last Name"
+       className="register-input"
+      value={employee.lastName}
+       onChange={handleChange}
+      />
 
           <input
             type="email"
@@ -65,6 +90,7 @@ const Register = () => {
             className="register-input"
             value={employee.email}
             onChange={handleChange}
+            autoComplete="off"
           />
 
           <input
@@ -83,6 +109,8 @@ const Register = () => {
             className="register-input"
             value={employee.password}
             onChange={handleChange}
+            autoComplete="new-password"
+
           />
 
           <button

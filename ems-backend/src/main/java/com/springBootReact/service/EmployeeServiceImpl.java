@@ -1,5 +1,6 @@
 package com.springBootReact.service;
 
+import com.springBootReact.Utils.JwtUtil;
 import com.springBootReact.dto.EmployeeDto;
 import com.springBootReact.dto.LoginDto;
 import com.springBootReact.dto.RegisterDto;
@@ -9,6 +10,7 @@ import com.springBootReact.mapper.EmployeeMapper;
 import com.springBootReact.repository.EmployeeRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import com.springBootReact.exception.EmailAlreadyExistsException;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -23,24 +25,31 @@ public class EmployeeServiceImpl implements  EmployeeService{
     public String register(RegisterDto register) {
 
         // Check Email Exists
-
+        System.out.println("1");
         if(employeeRepository
                 .findByEmail(register.getEmail())
                 .isPresent()) {
 
-            throw new RuntimeException(
+            System.out.println("2");
+
+            throw new EmailAlreadyExistsException(
                     "Email already exists");
         }
+
+        System.out.println("3");
 
         Employee employee =
                 EmployeeMapper.mapToEmployee(register);
 
+        System.out.println("4");
+
         Employee savedEmployee =
                 employeeRepository.save(employee);
 
+        System.out.println("5");
+
         return "Registration Successful";
     }
-
     // LOGIN
 
     @Override
@@ -59,7 +68,9 @@ public class EmployeeServiceImpl implements  EmployeeService{
                     "Invalid Password");
         }
 
-        return "Login Successful";
+        return JwtUtil.generateToken(
+                employee.getEmail());
+
     }
     @Override
     public EmployeeDto createEmployee(EmployeeDto employeeDto) {

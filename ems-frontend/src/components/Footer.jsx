@@ -6,7 +6,7 @@ const Footer = () => {
   return (
     <div>
         <footer className="footer">
-             <span>All rights reserved 2026 by Shakeel Ahmed</span>
+             <span>All rights reserved 2026 </span>
         </footer>
       
     </div>

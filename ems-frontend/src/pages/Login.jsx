@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
+import { loginUser } from '../services/authService'
 import './Login.css'
 
 const Login = () => {
@@ -19,18 +20,43 @@ const Login = () => {
     })
   }
 
-  const handleSubmit = (e) => {
+ 
 
-    e.preventDefault()
+  const handleSubmit = async (e) => {
 
-    console.log(loginData)
+   e.preventDefault()
 
-    // API Call Here
+   try {
+
+      
+      const response = await loginUser(loginData)
+
+      console.log(response.data)
+
+      // Extract Token
+
+      const token = response.data.token
+
+      // Store Token
+
+      localStorage.setItem(
+      "token",
+      token
+      )
+
+
 
     alert("Login Successful")
 
     navigate('/dashboard')
-  }
+
+   } catch (error) {
+
+      console.error(error)
+
+      alert("Invalid Credentials")
+   }
+}
 
   return (
 
